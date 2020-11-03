@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/','InquiryController@index');
+
+Route::get('bootstrap',function() {
+    return view('template');
 });
+
+Route::post('inquiry','InquiryController@postInquiry')->name('inquiry');
