@@ -16,6 +16,6 @@ class InquiryController extends Controller
     // postInquiryメソッドの実行前にInquiryRequestクラスのバリデーションが実行されます。
     public function postInquiry(InquiryRequest $request)
     {
-        return view('template');
+        return 'ok';
     }
 }
