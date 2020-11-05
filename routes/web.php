@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/','InquiryController@index');
+Route::get('/','InquiryController@index')->name('index');
 
 Route::get('bootstrap',function() {
     return view('template');
@@ -20,3 +20,5 @@ Route::get('bootstrap',function() {
 Route::post('inquiry','InquiryController@postInquiry')->name('inquiry');
 
 Route::get('confirm','InquiryController@showConfirm')->name('confirm');
+
+Route::post('confirm','InquiryController@postConfirm')->name('confirm');
