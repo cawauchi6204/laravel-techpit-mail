@@ -2,7 +2,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-// 追加
+
 use Illuminate\Validation\Rule;
 
 class InquiryRequest extends FormRequest
@@ -33,6 +33,7 @@ class InquiryRequest extends FormRequest
         ];
     }
     
+    // このattributesメソッドでrulesの表示名を変えることができる
     public function attributes()
     {
         return [
