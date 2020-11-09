@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InquiryRequest;
+use App\Mail\InquiryMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class InquiryController extends Controller
 {
@@ -32,17 +34,37 @@ class InquiryController extends Controller
     {
         // dd($request->session()->get('inquiry'));
         $sessionData = $request->session()->get('inquiry');
+        
+        if(is_null($sessionData)) {
+            return redirect('index');
+        }
         $message = view('emails.inquiry',$sessionData);
         return view('confirm',['message' => $message]);
     }
     
     public function postConfirm(Request $request)
     {
-        return redirect(route('sent'));
+        $sessionData = $request->session()->get('inquiry');
+        
+        if(is_null($sessionData)) {
+            return redirect('index');
+        }
+        $request->session()->forget('inquiry');
+        
+        Mail::to($sessionData['email'])
+        ->send(new InquiryMail($sessionData));
+        return redirect(route('sent'))->with('sent_inquiry',true);
+        // メール送信後の処理で、次の1回のみ有効なセッションデータ
+        // (フラッシュデータとも言います)を渡すことのできるwithメソッド
     }
     
-    public function showSentMessage()
+    public function showSentMessage(Request $request)
     {
+        $request->session()->keep('sent_inquiry');
+        $sessionData = $request->session()->get('sent_inquiry');
+        if(is_null($sessionData)) {
+            return redirect(route('index'));
+        }
         return view('sent');
     }
 }
