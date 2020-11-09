@@ -22,3 +22,5 @@ Route::post('inquiry','InquiryController@postInquiry')->name('inquiry');
 Route::get('confirm','InquiryController@showConfirm')->name('confirm');
 
 Route::post('confirm','InquiryController@postConfirm')->name('confirm');
+
+Route::get('sent','InquiryController@showSentMessage')->name('sent');
