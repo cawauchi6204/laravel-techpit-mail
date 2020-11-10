@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\InquiryRequest;
 use App\Mail\InquiryMail;
+use App\Models\Inquiry;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -36,7 +38,7 @@ class InquiryController extends Controller
         $sessionData = $request->session()->get('inquiry');
         
         if(is_null($sessionData)) {
-            return redirect('index');
+            return redirect(route('index'));
         }
         $message = view('emails.inquiry',$sessionData);
         return view('confirm',['message' => $message]);
@@ -47,9 +49,12 @@ class InquiryController extends Controller
         $sessionData = $request->session()->get('inquiry');
         
         if(is_null($sessionData)) {
-            return redirect('index');
+            return redirect(route('index'));
         }
+        
         $request->session()->forget('inquiry');
+        
+        Inquiry::create($sessionData);
         
         Mail::to($sessionData['email'])
         ->send(new InquiryMail($sessionData));
